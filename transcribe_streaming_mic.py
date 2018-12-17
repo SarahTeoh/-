@@ -10,12 +10,10 @@ from google.cloud.speech import types
 import pyaudio
 from six.moves import queue
 from pykakasi import kakasi     #漢字をひらがなに変換モジュール
-import time
 
 # Audio recording parameters
 RATE = 16000
 CHUNK = int(RATE / 10)  # 100ms
-
 
 class MicrophoneStream(object):
     """Opens a recording stream as a generator yielding the audio chunks."""
@@ -84,11 +82,16 @@ class MicrophoneStream(object):
 rate = ""
 close = ""
 num_chars_printed = 0
+num_words_spoken = 0
+warn = "" 
+voice_paused_list = ["えーと", "えっとー", "えっと", "あのー","えっと ","あー","あの"]
 def listen_print_loop(responses):
     spoken = []
     global num_chars_printed
+    global num_words_spoken
     global rate
     global close
+    global warn
 
     for response in responses:
         if not response.results:
@@ -106,28 +109,39 @@ def listen_print_loop(responses):
         transcript = (conv.do(kana_script.replace("\u3000","")))
 
         overwrite_chars = ' ' * (num_chars_printed - len(transcript))
-        
+        word_list = list(transcript)
+
         if not result.is_final:
-            num_chars_printed = len(transcript)
-            print(num_chars_printed)
+            num_words_spoken = len(transcript) + num_chars_printed
+            #print(num_words_spoken)
+            #sys.stdout.write(transcript + overwrite_chars + '\r')
+            #sys.stdout.flush()
+            last_word = [''.join(word_list[-4::]),''.join(word_list[-3::]), ''.join(word_list[-2::])] 
+            if any(word in voice_paused_list for word in last_word):    
+                warn = True
 
         else:
             spoken.append(transcript + overwrite_chars)
             final_spoken = ''.join(spoken) #喋った単語を全部ひらがなに変換
-            #print(final_spoken)
-            rate = len(final_spoken) #一分間に喋った文字数
-            print(rate)
+            print(final_spoken)    
+            num_chars_printed = num_words_spoken
             if close:
                 print(final_spoken)  
-                rate = len(final_spoken) #一分間に喋った文字数
-                print(rate)
                 print('Exiting..')
-                break
 
+                break
             if re.search(r'\b(おわり|quit)\b', transcript, re.I):
                 print("ended forcefully")
                 break
-         
+
+def count_words():
+    global num_words_spoken
+    global num_chars_printed
+    num_words_spoken = num_chars_printed + num_words_spoken
+
+def set_warn():
+    global warn
+    warn = ""
 
 def main():
     language_code = 'ja-JP'  
