@@ -182,46 +182,64 @@ class ResultPage(tk.Frame):
 
         self.logo_image = PhotoImage(file="C:/Users/Programming exp/Desktop/Presys_logo_small.png")
         self.logo = tk.Label(self, image = self.logo_image, borderwidth = 0)
-        self.title_label = tk.Label(self,text= "採点結果", font = "遊ゴジックLight 20", bg ="white")
+        self.title_label = tk.Label(self,text= "採点結果", font = "遊ゴジックLight 30", bg ="white")
 
-        self.logo.place(relx = 0.5, rely = 0.15, anchor = "center")
-        self.title_label.place(relx = 0.5, rely = 0.25, anchor = "center")
+        self.logo.place(relx = 0.5, rely = 0.1, anchor = "center")
+        self.title_label.place(relx = 0.5, rely = 0.18, anchor = "center")
         
         #点数
-        self.mark_frame = tk.Frame(self,  height=50, width = 40, bg="white")
-        self.mark_label = tk.Label(self.mark_frame,text= "あなたの点数", font = "遊ゴジックLight 23", bg ="white")
-        self.mark = tk.Label(self.mark_frame,text= str(round(self.score))+"点", font = "遊ゴジックLight 30", bg ="light blue")
+        self.mark_frame = tk.Frame(self, bg="light cyan")
+        self.mark_frame.grid_rowconfigure(0, weight=1)     
+        self.mark_frame.grid_columnconfigure(0, weight=2)  
+        self.mark_frame.grid_rowconfigure(1, weight=1)     
+        self.mark_frame.grid_columnconfigure(1, weight=2)   
+        self.mark_label = tk.Label(self.mark_frame, text= "あなたの点数", font = "遊ゴジックLight 30", bg ="light blue") #PaleTurquoise1
+        self.mark = tk.Label(self.mark_frame,text= str(round(self.score)), font = "遊ゴジックLight 90", justify = "center", bg ="light cyan")
+        self.point = tk.Label(self.mark_frame,text= "点", font = "遊ゴジックLight 50", bg ="light cyan")
         
-        self.mark_frame.place(relx = 0.3, rely = 0.35, anchor = "center")
-        self.mark_label.grid(row = 0, column = 0)
-        self.mark.grid(row = 0, column = 1)
+        self.mark_frame.place(relx = 0.25, rely = 0.37, relwidth = 0.45, relheight = 0.3, anchor = "center")
+        self.mark_label.place(relx = 0, rely = 0, relwidth = 1.0, relheight = 0.3)#grid(row = 0, columnspan = 2, sticky = "nsew")
+        self.mark.grid(row = 1, columnspan = 2, sticky = "nsew")
+        self.point.grid(row = 2, columnspan = 2, sticky = "se")
 
         #コメント
-        self.comment_frame = tk.Frame(self,  height=50, width = 40, bg="white")
-        self.comment_label = tk.Label(self.mark_frame,text= "コメント", font = "遊ゴジックLight 23", bg ="white")
-        self.comment = tk.Label(self.mark_frame,text= self.comment, font = "遊ゴジックLight 30", bg ="light blue")
+        self.comment_frame = tk.Frame(self,  bg="light cyan")
+        self.comment_frame.grid_rowconfigure(0, weight=1)     
+        self.comment_frame.grid_columnconfigure(0, weight=2)  
+        self.comment_frame.grid_rowconfigure(1, weight=2)     
+        self.comment_frame.grid_columnconfigure(1, weight=2)   
+        self.comment_label = tk.Label(self.comment_frame,text= "コメント", font = "遊ゴジックLight 30", bg ="light blue")
+        self.comment = tk.Label(self.comment_frame,text= self.comment, font = "遊ゴジックLight 20", wraplength=280, bg ="light cyan")
         
-        self.comment_frame.place(relx = 0.6, rely = 0.35, anchor = "center")
-        self.comment_label.grid(row = 0, column = 0)
-        self.comment.grid(row = 0, column = 1)
+        self.comment_frame.place(relx = 0.75, rely = 0.37, relwidth = 0.45, relheight = 0.3, anchor = "center")
+        self.comment_label.place(relx = 0, rely = 0, relwidth = 1.0, relheight = 0.24)#, anchor = "center")#grid(rowspan = 1, columnspan = 2, sticky = "nsew")
+        self.comment.grid(row = 1, columnspan = 2, sticky = "nsew")
 
         #話速度
-        self.speechrate_frame = tk.Frame(self,  height=50, width = 40, bg="white")
-        self.speechrate_label = tk.Label(self.speechrate_frame,text= "話速度", font = "遊ゴジックLight 17", bg ="white")
-        self.speechrate = tk.Label(self.speechrate_frame,text= str(round(self.speechrate, 1))+"字/分", font = "遊ゴジックLight 30", bg ="light blue")
+        self.speechrate_frame = tk.Frame(self, width = 40, bg="light cyan")
+        self.speechrate_frame.grid_rowconfigure(0, weight=2)     
+        self.speechrate_frame.grid_columnconfigure(0, weight=2)  
+        self.speechrate_frame.grid_rowconfigure(1, weight=2)     
+        self.speechrate_frame.grid_columnconfigure(1, weight=2)  
+        self.speechrate_label = tk.Label(self.speechrate_frame,text= "話速度", font = "遊ゴジックLight 25", bg ="light blue")
+        self.speechrate = tk.Label(self.speechrate_frame,text= str(round(self.speechrate, 1))+"字/分", font = "遊ゴジックLight 23", bg ="light cyan")
         
-        self.speechrate_frame.place(relx = 0.5, rely = 0.4, anchor = "center")
-        self.speechrate_label.grid(row=0, column=0)
-        self.speechrate.grid(row=0, column=1)
+        self.speechrate_frame.place(relx = 0.25, rely = 0.58, relwidth = 0.45, relheight = 0.08, anchor = "center")
+        self.speechrate_label.grid(row = 0, columnspan = 2, sticky ="nsew")
+        self.speechrate.grid(row = 1, columnspan = 2, sticky ="nsew")
 
         #pitch
-        self.pitch_frame = tk.Frame(self,  height=50, width = 40, bg="white")
-        self.pitch_label = tk.Label(self.pitch_frame,text= "抑揚", font = "遊ゴジックLight 17", bg ="white")
-        self.pitch = tk.Label(self.pitch_frame,text= str(round(self.pitch, 1)), font = "遊ゴジックLight 30", bg ="light blue")
+        self.pitch_frame = tk.Frame(self, bg="light blue")
+        self.pitch_frame.grid_rowconfigure(0, weight=2)     
+        self.pitch_frame.grid_columnconfigure(0, weight=2)  
+        self.pitch_frame.grid_rowconfigure(1, weight=2)     
+        self.pitch_frame.grid_columnconfigure(1, weight=2)  
+        self.pitch_label = tk.Label(self.pitch_frame,text= "声の高さの標準偏差", font = "遊ゴジックLight 25", bg ="light blue")
+        self.pitch = tk.Label(self.pitch_frame,text= str(round(self.pitch, 1)), font = "遊ゴジックLight 23", bg ="light cyan")
         
-        self.pitch_frame.place(relx = 0.5, rely = 0.5, anchor = "center")
-        self.pitch_label.grid(row = 0, column = 0)
-        self.pitch.grid(row = 0, column = 1)
+        self.pitch_frame.place(relx = 0.75, rely = 0.58, relwidth = 0.45, relheight = 0.08, anchor = "center")
+        self.pitch_label.grid(row = 0, columnspan = 2, sticky ="nsew")
+        self.pitch.grid(row = 1, columnspan = 2, sticky ="nsew")
 
         #ピッチのグラフ
         self.f = Figure(figsize = (5, 5), dpi = 100)
@@ -236,7 +254,7 @@ class ResultPage(tk.Frame):
         
         self.canvas = FigureCanvasTkAgg(self.f, self)
         self.canvas.draw()
-        self.canvas.get_tk_widget().place(relx = 0.5, rely = 0.7, anchor = "center")
+        self.canvas.get_tk_widget().place(relx = 0.5, rely = 0.8, relwidth = 1, relheight = 0.35, anchor = "center")
 
 #フールスクリーンモードを終了する関数
 def end_fullscreen(event=None):
