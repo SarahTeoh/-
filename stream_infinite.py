@@ -12,6 +12,7 @@ from google.api_core import exceptions
 import six
 
 import transcribe_streaming_mic
+import fundamental_freq
 
 def duration_to_secs(duration):
     return duration.seconds + (duration.nanos / float(1e9))
@@ -168,19 +169,15 @@ def control(sample_rate, audio_src):
             try:
                 # Now, put the transcription responses to use.
                 listen_print_loop(responses, stream)
-                #TODO:run get_rate() here?
+                
                 break
             except (exceptions.OutOfRange, exceptions.InvalidArgument) as e:
                 if not ('maximum allowed stream duration' in e.message or
                         'deadline too short' in e.message):
                     raise
-                print('Resuming..')
+                transcribe_streaming_mic.count_words() 
+                #print('Resuming..')
                 resume = True
-
-#話速度をget
-def get_rate():
-    speechrate = transcribe_streaming_mic.rate
-    return str(speechrate)
 
 def run():
     parser = argparse.ArgumentParser(
@@ -190,4 +187,5 @@ def run():
     parser.add_argument('--audio_src', help='File to simulate streaming of.')
     args = parser.parse_args()
     control(args.rate, args.audio_src)
+    
 
