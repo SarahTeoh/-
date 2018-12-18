@@ -83,17 +83,16 @@ class PracticePage(tk.Frame, App):
         self.logo_image = PhotoImage(file="C:/Users/Programming exp/Desktop/Presys_logo_small.png")
         self.logo = tk.Label(self, image = self.logo_image, bg ="white", borderwidth = 0)
         self.timeLeft_label =  tk.Label(self, text= "残り時間", font ="遊ゴジックLight 30", bg ="white")
-        self.timeLeft = tk.Label(self, text= "", font ="遊ゴジックLight 40", bg ="white")
-        #self.comment = tk.Label(self, text= "", font ="遊ゴジックLight 20 ", bg ="white")
+        self.timeLeft = tk.Label(self, text= "", font ="遊ゴジックLight 45", bg ="white")
+        self.comment = tk.Label(self, text= "", font ="遊ゴジックLight 20 ", bg ="white")
         self.warning_label = tk.Label(self, text= "", font ="遊ゴジックLight 25 ", bg ="white")
         self.backButton = tk.Button(self, text="やり直す", borderwidth=0,   font ="遊ゴジックLight 30", bg ="light blue", command = lambda: controller.create_windows(StartPage))
         self.homeButton = tk.Button(self, text="サインアウト", borderwidth=0, font ="遊ゴジックLight 30", bg ="powder blue", command = lambda: controller.create_windows(SignInPage))
-        #TODO:backButtonかhomeButtonが押されたら音声認識、録音などをやり直す
-
+        
         self.logo.place(relx = 0.5, rely = 0.2, anchor = "center")
         self.timeLeft.place(relwidth = 1.0, relheight = 0.1, relx = 0.5, rely = 0.45, anchor = "center")
         self.timeLeft_label.place(relwidth = 1.0, relheight = 0.1, relx = 0.5, rely = 0.35, anchor = "center")
-        #self.comment.place(relwidth = 0.4, relheight = 0.1, relx = 0.5, rely = 0.55, anchor = "center")
+        self.comment.place(relwidth = 1.0, relheight = 0.1, relx = 0.5, rely = 0.55, anchor = "center")
         self.warning_label.place(relwidth = 1.0, relheight = 0.1, relx = 0.5, rely = 0.70, anchor = "center")
         self.backButton.place(relwidth = 0.6, relheight = 0.09, relx = 0.5, rely = 0.80, anchor = "center")
         self.homeButton.place(relwidth = 0.6, relheight = 0.09, relx = 0.5, rely = 0.90, anchor = "center")
@@ -133,19 +132,21 @@ class PracticePage(tk.Frame, App):
                 self.timeLeft.configure(text=str(mins) +"分"+ str(secs) +"秒")
                 if transcribe_streaming_mic.warn:
                     self.set_warning()
-                if self.remaining == 35:
+                if self.remaining == 7:
                     first_min_rate = transcribe_streaming_mic.num_chars_printed
                     self.set_comment(first_min_rate)
-                elif self.remaining == 20:
+                elif self.remaining == 4:
                     second_min_rate = transcribe_streaming_mic.num_chars_printed
                     self.set_comment(second_min_rate)
                 self.remaining = self.remaining - 1
                 self.after(1000, self.countdown)   
 
+    #有声休止を言ったときに警告を表示する
     def set_warning(self):
         self.warning_label.configure(text="\"えっと\"を言わないで！")
         self.after(1000,self.erase_warning)
 
+    #有声休止に対する警告を消す
     def erase_warning(self):
         self.warning_label.configure(text="")
         transcribe_streaming_mic.set_warn()
@@ -162,9 +163,6 @@ class PracticePage(tk.Frame, App):
     #プレゼン全体に点数を付けるための処理をして、クラスResultPageに移す
     def show_result(self):
         self.controller.create_windows(ResultPage)  #採点結果ウインドウズResultPageを表示
-        #speechrate = transcribe_streaming_mic.num_chars_printed/3 #話速度
-        #pitch = float(fundamental_freq.hensa)
-        #score = float(scoring.cos_sim(speechrate, pitch)) #全体の点数
         
 #点数などの結果を表示するウインドウズ
 class ResultPage(tk.Frame):
@@ -172,12 +170,13 @@ class ResultPage(tk.Frame):
         tk.Frame.__init__(self, parent)
         tk.Frame.config(self, bg="white")
 
-        self.speechrate = transcribe_streaming_mic.num_chars_printed/3 #話速度
-        self.pitch_data = fundamental_freq.sound_data
-        self.pitch = float(fundamental_freq.hensa)
-        self.speechrate_comment = scoring.speechRateComment(self.speechrate)
-        self.pitch_comment = scoring.pitchComment(self.pitch)
-        self.comment = self.speechrate_comment + self.pitch_comment
+        #話速度、ピッチ、それらに対するコメントと全体の点数を取ってくる
+        self.speechrate = transcribe_streaming_mic.num_chars_printed/3 #[字/分]
+        self.pitch_data = fundamental_freq.sound_data #[Hz]のリスト
+        self.pitch = float(fundamental_freq.hensa) #ピッチの標準偏差(単位なし) 
+        self.speechrate_comment = scoring.speechRateComment(self.speechrate) #話速度に対するコメント
+        self.pitch_comment = scoring.pitchComment(self.pitch) #ピッチに対するコメント
+        self.comment = self.speechrate_comment + self.pitch_comment #上の二つのコメントを結合
         self.score = float(scoring.cos_sim(self.speechrate, self.pitch)) #全体の点数
 
         self.logo_image = PhotoImage(file="C:/Users/Programming exp/Desktop/Presys_logo_small.png")
@@ -245,7 +244,6 @@ class ResultPage(tk.Frame):
         self.f = Figure(figsize = (5, 5), dpi = 100)
         self.a = self.f.add_subplot(111)
         self.a.plot(self.pitch_data)
-        #self.a.set_title("声の高さ(抑揚)")
         self.a.axes.set_xlim([0,180])
         self.a.set_xlabel("時間[s]", fontsize = 18)
         self.a.set_ylabel("声の高さ[Hz]", fontsize = 18)
