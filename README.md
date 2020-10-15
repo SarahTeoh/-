@@ -12,15 +12,15 @@ With this system, you will be able to practice your presentation by just standin
 
 ### Feedback from system
 1. Sign-in page to the system
-<img src="https://user-images.githubusercontent.com/28722169/96092589-0ac78380-0f06-11eb-9964-5c4e30f418ca.png" width="324" height="400">
+<img src="https://user-images.githubusercontent.com/28722169/96092589-0ac78380-0f06-11eb-9964-5c4e30f418ca.png" width="324" height="450">
 
 2. Real-time feedback to fillers(eg: umm.., eh...)
 
-<img src="https://user-images.githubusercontent.com/28722169/96091936-241c0000-0f05-11eb-8e9d-59f7d45cbd16.jpeg" width="324" height="400">
+<img src="https://user-images.githubusercontent.com/28722169/96091936-241c0000-0f05-11eb-8e9d-59f7d45cbd16.jpeg" width="324" height="450">
                                                                                                                                         
 3. Final feedback
 
-<img src="https://user-images.githubusercontent.com/28722169/96092630-19159f80-0f06-11eb-942d-75f6e761648b.jpeg" width="324" height="400">
+<img src="https://user-images.githubusercontent.com/28722169/96092630-19159f80-0f06-11eb-942d-75f6e761648b.jpeg" width="324" height="450">
 
 ### System setup
 <img src="https://user-images.githubusercontent.com/28722169/96091600-c687b380-0f04-11eb-9943-e74f48ba4a72.jpg" width="324" height="324">
