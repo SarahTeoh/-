@@ -15,4 +15,4 @@ With this system, you will be able to practice your presentation by just standin
 
 
 ### System setup
-![System setup](https://user-images.githubusercontent.com/28722169/96091600-c687b380-0f04-11eb-9943-e74f48ba4a72.jpg =80x20)
+<img src="https://user-images.githubusercontent.com/28722169/96091600-c687b380-0f04-11eb-9943-e74f48ba4a72.jpg" width="324" height="324">
